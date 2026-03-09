@@ -14,6 +14,18 @@
     <h2>giỏ hàng</h2>
     <div id="cart-list"></div>
     <h3 id="total-price"></h3>
+    <button onclick="showCheckout()">Thanh toán</button>
+
+    <div id="checkout-form" style="display: none">
+        <h2>Thông tin khách hàng</h2>
+        <input id="customer-name" placeholder="Tên">
+        <input id="customer-phone" placeholder="Số điện thoại">
+        <input id="customer-address" placeholder="Địa chỉ">
+        <button onclick="placeOrder()">Đặt hàng</button>
+    </div>
+
+
+
     <script src="script.js"></script>
 </body>
 

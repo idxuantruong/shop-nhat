@@ -109,3 +109,46 @@ products.forEach(p => {
         </div>
         `
 })
+
+function showCheckout() {
+    document.getElementById("checkout-form").style.display = "block"
+}
+
+function hideCheckout() {
+    document.getElementById("checkout-form").style.display = "none"
+}
+
+function placeOrder() {
+    const name = document.getElementById("customer-name").value
+    const phone = document.getElementById("customer-phone").value
+    const address = document.getElementById("customer-address").value
+
+    if (!name || !phone || !address) {
+        alert("Vui lòng nhập đầy đủ thông tin")
+        return
+    }
+
+    const order = {
+        customer: {
+            name,
+            phone,
+            address
+        },
+        items: cart.filter(p => p.quantity > 0),
+        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        date: new Date()
+    }
+
+    console.log(order)
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || []
+    orders.push(order)
+    localStorage.setItem("orders", JSON.stringify(orders))
+
+    alert("Đặt hàng thành công")
+
+    cart = cart.filter(p => p.quantity === 0)
+
+    renderCart()
+    hideCheckout()
+}
