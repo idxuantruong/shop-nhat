@@ -1,35 +1,10 @@
-const products = [
-    {
-        id: 1,
-        name: "Áo khoác",
-        price: 500000,
-        img: "img1.png"
-    },
-    {
-        id: 2,
-        name: "Giày Nike",
-        price: 2000000,
-        img: "img2.png"
-    },
-    {
-        id: 3,
-        name: "Túi xách",
-        price: 1200000,
-        img: "img3.png"
-    },
-    {
-        id: 4,
-        name: "Quần",
-        price: 900000,
-        img: "img4.png"
-    },
-    {
-        id: 5,
-        name: "Mũ",
-        price: 100000,
-        img: "img5.png"
-    }
-]
+
+async function loadProducts() {
+    const res = await fetch("http://localhost:5000/products")
+    const products = await res.json()
+    console.log(products)
+}
+loadProducts()
 
 let cart = JSON.parse(localStorage.getItem("cart")) || []
 renderCart()
