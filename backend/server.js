@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const User = require("./models/User")
 const Product = require("./models/Product")
+const Order = require("./models/Order")
 
 const jwt = require("jsonwebtoken")
 const auth = require("./middleware/auth")
@@ -102,5 +103,56 @@ app.get("/products", async (req, res) => {
     const products = await Product.find()
 
     res.json(products)
+
+})
+
+app.post("/orders", auth, async (req, res) => {
+
+    const order = new Order({
+
+        userId: req.user.id,
+
+        items: req.body.items,
+
+        total: req.body.total
+
+    })
+
+    await order.save()
+
+    res.json({
+        message: "Order created",
+        order
+    })
+
+})
+
+app.get("/orders/my", auth, async (req, res) => {
+
+    const orders = await Order.find({
+        userId: req.user.id
+    })
+
+    res.json(orders)
+
+})
+
+app.get("/orders", auth, admin, async (req, res) => {
+
+    const orders = await Order.find()
+
+    res.json(orders)
+
+})
+
+app.get("/revenue", auth, admin, async (req, res) => {
+
+    const orders = await Order.find()
+
+    const revenue = orders.reduce((sum, o) => sum + o.total, 0)
+
+    res.json({
+        totalRevenue: revenue
+    })
 
 })
