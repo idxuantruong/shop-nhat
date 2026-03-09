@@ -31,9 +31,36 @@ const products = [
     }
 ]
 
+let cart = JSON.parse(localStorage.getItem("cart")) || []
+renderCart()
+
 function buyProduct(id) {
     const product = products.find(p => p.id === id)
-    alert("Bạn đã mua " + product.name)
+
+    cart.push(product)
+
+    renderCart()
+}
+
+function renderCart() {
+    const cartList = document.getElementById("cart-list")
+
+    cartList.innerHTML = ""
+    cart.forEach(p => {
+        cartList.innerHTML += `
+        <div>
+            ${p.name} - ${p.price.toLocaleString()}VND
+        </div>
+        `
+    })
+
+    localStorage.setItem("cart", JSON.stringify(cart))
+    updateTotal()
+}
+
+function updateTotal() {
+    const total = cart.reduce((sum, item) => sum + item.price, 0)
+    document.getElementById("total-price").innerText = "Tổng tiền: " + total.toLocaleString() + " VND"
 }
 
 const productList = document.getElementById("product-list")
