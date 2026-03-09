@@ -62,7 +62,7 @@ function renderCart() {
             <button onclick="decrease(${item.id})">-</button>
             <span>${item.quantity}</span>
             <button onclick="increase(${item.id})">+</button>
-            <span>${(item.quantity * item.price).toLocaleString()}VND</span>
+            <span>${(item.quantity * item.price).toLocaleString()} VND</span>
             <button onclick="removeItem(${item.id})">Remove</button>
         </div>
         `
@@ -104,7 +104,7 @@ products.forEach(p => {
         <div class="product">
             <img src="${p.img}">
             <h2>${p.name}</h2>
-            <p>Giá: ${p.price.toLocaleString()}VND</p>
+            <p>Giá: ${p.price.toLocaleString()} VND</p>
             <button onclick="buyProduct(${p.id})">Mua</button>
         </div>
         `
