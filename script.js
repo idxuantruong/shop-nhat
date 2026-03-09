@@ -37,7 +37,16 @@ renderCart()
 function buyProduct(id) {
     const product = products.find(p => p.id === id)
 
-    cart.push(product)
+    const item = cart.find(p => p.id === id)
+
+    if (item) {
+        item.quantity++
+    } else {
+        cart.push({
+            ...product,
+            quantity: 1
+        })
+    }
 
     renderCart()
 }
@@ -46,20 +55,45 @@ function renderCart() {
     const cartList = document.getElementById("cart-list")
 
     cartList.innerHTML = ""
-    cart.forEach(p => {
+    cart.forEach(item => {
         cartList.innerHTML += `
-        <div>
-            ${p.name} - ${p.price.toLocaleString()}VND
+        <div class="cart-item">
+            <span>${item.name}</span>
+            <button onclick="decrease(${item.id})">-</button>
+            <span>${item.quantity}</span>
+            <button onclick="increase(${item.id})">+</button>
+            <span>${(item.quantity * item.price).toLocaleString()}VND</span>
+            <button onclick="removeItem(${item.id})">Remove</button>
         </div>
         `
     })
 
-    localStorage.setItem("cart", JSON.stringify(cart))
     updateTotal()
+    localStorage.setItem("cart", JSON.stringify(cart))
+}
+
+function increase(id) {
+    const item = cart.find(p => p.id === id)
+    item.quantity++
+    renderCart()
+}
+
+function decrease(id) {
+    const item = cart.find(p => p.id === id)
+    item.quantity--
+    if (item.quantity < 0) {
+        item.quantity = 0
+    }
+    renderCart()
+}
+
+function removeItem(id) {
+    cart = cart.filter(p => p.id !== id)
+    renderCart()
 }
 
 function updateTotal() {
-    const total = cart.reduce((sum, item) => sum + item.price, 0)
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
     document.getElementById("total-price").innerText = "Tổng tiền: " + total.toLocaleString() + " VND"
 }
 
